@@ -126,6 +126,12 @@
             <version>1.10</version>
         </dependency>
         <!-- 微信需要结束 -->
+
+        <!--redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
