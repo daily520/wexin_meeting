@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class HitokotoUtil {
-    private static final String HITOKOTO_URL="https://v1.hitokoto.cn/";
+    private static final String HITOKOTO_URL="https://v1.hitokoto.cn/?c=a";
     public String sendRequest(){
-        JSONObject jsonObject=WeixinUtil.httpRequest(HITOKOTO_URL,"GET",null);
+        JSONObject jsonObject=WeixinUtil.httpRequest(HITOKOTO_URL,"POST",null);
         String result= (String) jsonObject.get("hitokoto");
         return result;
     }

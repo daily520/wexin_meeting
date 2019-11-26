@@ -25,7 +25,7 @@ public class MenuManager {
 
  */
 	
-	public final static String REAL_URL="http://weixinguo.xicp.net/maven_weixin/"; //个人花生壳
+	public final static String REAL_URL="http://daily.natapp1.cc/"; //个人花生壳
 	//public final static String REAL_URL = "http://wxmobsa.yidatec.com/weixin/"; //正式号服务器	
 	
 	public final static String appId="wx394eb878778720b8";

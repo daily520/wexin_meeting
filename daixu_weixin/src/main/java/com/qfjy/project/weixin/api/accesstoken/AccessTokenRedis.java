@@ -45,7 +45,9 @@ public class AccessTokenRedis {
 
     private String getAccessToken(){
         String url=AccessTokenUrl.replace("APPID", MenuManager.appId).replace("APPSECRET",MenuManager.appSecret);
+
         JSONObject jsonObject= WeixinUtil.httpRequest(url,"GET",null);
+
         String token= (String) jsonObject.get("access_token");
         return token;
     }

@@ -27,7 +27,8 @@ public class CoreService {
 	private TulingUtil tulingUtil;
 	@Autowired
 	private HitokotoUtil hitokotoUtil;
-
+	@Autowired
+	private UserInfoService userInfoService;
 	/**
 	 * 处理微信发来的请求
 	 * 
@@ -116,7 +117,7 @@ public class CoreService {
 				String eventType = requestMap.get("Event");
 				// 订阅
 				if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
-					
+					userInfoService.userInfo(fromUserName);
 					respContent = "欢迎关注微信公众号";
 				}
 				// 取消订阅
