@@ -112,7 +112,7 @@ public class MenuManager {
 		ViewButton btn32 = new ViewButton();
 		btn32.setName("个人中心");
 		btn32.setType("view");
-		btn32.setUrl("https://www.baidu.com/");
+		btn32.setUrl(MenuManager.REAL_URL+"oauth/weixin/user");
 
 		ViewButton btn33 = new ViewButton();
 		btn33.setName("版本消息");

@@ -10,4 +10,5 @@ import com.qfjy.po.Weiuser;
 public interface WeiuserService {
     Weiuser selectByOpenid(String openid);
     int add(Weiuser record);
+
 }
