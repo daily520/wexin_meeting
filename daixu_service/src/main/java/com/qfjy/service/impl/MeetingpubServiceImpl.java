@@ -20,6 +20,8 @@ import java.util.UUID;
 public class MeetingpubServiceImpl implements MeetingpubService {
     @Autowired
     private MeetingpubMapper meetingpubMapper;
+
+    //保存会议发单
     @Override
     public int addMeetingpub(Meetingpub meetingpub) {
         meetingpub.setId(UUID.randomUUID().toString());
@@ -29,6 +31,7 @@ public class MeetingpubServiceImpl implements MeetingpubService {
         return meetingpubMapper.insertSelective(meetingpub);
     }
 
+    //产生会议发单编号
     @Override
     public String generateTme(String ptime) {
         String str=ptime.substring(0,10);

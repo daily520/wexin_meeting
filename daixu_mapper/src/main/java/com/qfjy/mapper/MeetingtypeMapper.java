@@ -18,6 +18,7 @@ public interface MeetingtypeMapper {
 
     int updateByPrimaryKey(Meetingtype record);
 
+    //查取所有的会议种类
     @Select("select * from meetingtype where status=1 order by sortnum")
     List<Meetingtype> selectAllMeetingType();
 }

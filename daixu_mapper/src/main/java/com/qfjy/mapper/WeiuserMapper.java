@@ -17,9 +17,8 @@ public interface WeiuserMapper {
 
     int updateByPrimaryKey(Weiuser record);
 
+    //根据用户的openid查询微信会员
     @Select("select * from weiuser where openid=#{openid}")
     Weiuser selectByOpenid(String openid);
 
-    @Insert("insert into weiuser values(default,#{openid},#{nickname},#{sex},#{city},#{country},#{province},#{headimgurl},#{subscribe},#{language},#{remark})")
-    int saveWeiuser(Weiuser weiuser);
 }
