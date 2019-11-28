@@ -1,9 +1,13 @@
 package com.qfjy.project.weixin.meeting.oauth;
 
+import com.qfjy.mapper.MeetingtypeMapper;
+import com.qfjy.po.Meetingtype;
 import com.qfjy.po.User;
 import com.qfjy.po.Weiuser;
 import com.qfjy.project.weixin.main.MenuManager;
+import com.qfjy.project.weixin.util.OauthUtil;
 import com.qfjy.project.weixin.util.WeixinUtil;
+import com.qfjy.service.MeetingTypeService;
 import com.qfjy.service.UserService;
 import com.qfjy.service.WeiuserService;
 import net.sf.json.JSONObject;
@@ -23,44 +27,26 @@ import java.net.URLEncoder;
  * @date 2019/11/27 16:31
  */
 @RequestMapping("oauth")
-@Controller("weixinOauth1")
+@Controller
 public class WeixinOauth {
     @Autowired
     private WeiuserService weiuserService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private MeetingTypeService meetingTypeService;
     @RequestMapping("weixin/user")
     public void weixinOauth(HttpServletResponse response) throws IOException {
-        String oauth_url= MenuManager.REAL_URL+"oauth/weixin/user/invoke";
-        try {
-            oauth_url= URLEncoder.encode(oauth_url,"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        String url="https://open.weixin.qq.com/connect/oauth2/authorize?" +
-                "appid="+MenuManager.appId +
-                "&redirect_uri="+oauth_url +
-                "&response_type=code" +
-                "&scope=snsapi_base" +
-                "&state=java#wechat_redirect";
-        response.sendRedirect(url);
+        OauthUtil.oauthUrl(response,"oauth/weixin/user/invoke");
     }
     @RequestMapping("weixin/user/invoke")
     public String invoke(HttpServletRequest request){
-        String code=request.getParameter("code");
-        String url="https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                "appid="+MenuManager.appId +
-                "&secret="+MenuManager.appSecret +
-                "&code="+code +
-                "&grant_type=authorization_code";
-        JSONObject jsonObject= WeixinUtil.httpRequest(url,"GET",null);
-        System.out.println(jsonObject.toString());
 
-        String openId= (String) jsonObject.get("openid");
+        String openId=OauthUtil.getOpenid(request);
 
         Weiuser weiuser= weiuserService.selectByOpenid(openId);
         if (weiuser==null){
-
+            return "";
         }else {
             User user=userService.getUserByWid(weiuser.getId());
             if (user==null){
@@ -72,6 +58,36 @@ public class WeixinOauth {
             }
         }
 
-        return "oauth";
+
+    }
+    @RequestMapping("weixin/meetingPub")
+    public void meetingPubOauth(HttpServletResponse response) throws IOException {
+        OauthUtil.oauthUrl(response,"oauth/weixin/meetingPub/invoke");
+
+    }
+
+    @RequestMapping("weixin/meetingPub/invoke")
+    public String meetingPubInvoke(HttpServletRequest request){
+        String openId=OauthUtil.getOpenid(request);
+        Weiuser weiuser=weiuserService.selectByOpenid(openId);
+        if(weiuser==null){
+            return "";
+        }else {
+            User user=userService.getUserByWid(weiuser.getId());
+            if(user==null){
+                request.setAttribute("wid",weiuser.getId());
+                return "weixin/login";
+            }else {
+                int rid=user.getRid();
+                if (1==rid){
+                    request.setAttribute("uid",user.getId());
+                    return "weixin/meeting/meetingPub";
+                }else if(2==rid){
+                    return "weixin/unauth";
+                }else {
+                    return "";
+                }
+            }
+        }
     }
 }

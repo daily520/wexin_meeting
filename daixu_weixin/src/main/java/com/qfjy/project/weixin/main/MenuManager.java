@@ -76,12 +76,12 @@ public class MenuManager {
 
 		
 		ViewButton btn10 = new ViewButton();
-		btn10.setName("会议抢单");
+		btn10.setName("会议发布");
 		btn10.setType("view");
-		btn10.setUrl("https://www.baidu.com/");
+		btn10.setUrl(MenuManager.REAL_URL+"oauth/weixin/meetingPub");
 
 		CommonButton btn11 = new CommonButton();
-		btn11.setName("会议发布");
+		btn11.setName("会议抢单");
 		btn11.setType("click");
 		btn11.setKey("11");
 		

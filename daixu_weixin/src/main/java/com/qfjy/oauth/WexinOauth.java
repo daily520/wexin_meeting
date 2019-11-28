@@ -18,8 +18,8 @@ import java.net.URLEncoder;
  * @version 1.0
  * @date 2019/11/26 16:37
  */
-@RequestMapping("oauth")
-@Controller
+//@RequestMapping("oauth")
+//@Controller
 public class WexinOauth {
     @RequestMapping("weixin")
     public void weixinOauth(HttpServletResponse response) throws IOException {
