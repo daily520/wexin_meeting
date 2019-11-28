@@ -2,9 +2,10 @@ package com.qfjy.mapper;
 
 import com.qfjy.po.Meetingpub;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface MeetingpubMapper {
     int deleteByPrimaryKey(String id);
 

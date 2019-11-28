@@ -3,7 +3,9 @@ package com.qfjy.mapper;
 import com.qfjy.po.Weiuser;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface WeiuserMapper {
     int deleteByPrimaryKey(Integer id);
 
