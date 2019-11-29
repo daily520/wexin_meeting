@@ -8,8 +8,10 @@ import com.qfjy.service.MeetingpubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -26,6 +28,7 @@ public class MeetingController {
     private MeetingTypeService meetingTypeService;
     @Autowired
     private MeetingpubService meetingpubService;
+
     @RequestMapping("typeList")
     @ResponseBody
     public List<Meetingtype> getList(){
@@ -44,4 +47,15 @@ public class MeetingController {
         return meetingpubService.getMyMeetingpub(uid);
     }
 
+    @RequestMapping("grab")
+    public String toGrab(@RequestParam("uid") Integer uid, HttpServletRequest request){
+        request.setAttribute("uid",uid);
+        return "weixin/meeting/meetingGrab";
+    }
+
+    @RequestMapping("grabList")
+    @ResponseBody
+    public List<Meetingpub> grabLit(@RequestParam("uid") Integer uid,@RequestParam("tname") String tname){
+        return meetingpubService.getUsefulPub(uid,tname);
+    }
 }

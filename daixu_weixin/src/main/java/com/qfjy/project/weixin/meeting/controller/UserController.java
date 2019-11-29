@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author daily
  * @version 1.0
@@ -41,5 +43,14 @@ public class UserController {
     public String updateUserInfo(User user){
         int num=userService.updateUser(user);
         return num+"";
+    }
+    @RequestMapping("toLogin")
+    public String toLogin(@RequestParam("wid") Integer wid, HttpServletRequest request){
+        request.setAttribute("wid",wid);
+        return "weixin/login";
+    }
+    @RequestMapping("toUnauth")
+    public String toUnauth(){
+        return "weixin/unauth";
     }
 }

@@ -149,4 +149,14 @@
       status = #{status,jdbcType=SMALLINT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectUsefulPub" parameterType="java.util.Map" resultType="com.qfjy.po.Meetingpub">
+    select * from meetingpub p
+    left join user u on (p.pzone='全国' or u.zone=p.pzone)
+    where u.id=#{uid}
+    and p.id not in(select pid from meetinggrab where grabStatus=1 or uid=#{uid})
+    <if test="tname!='-1'.toString()">
+      and p.tname=#{tname}
+    </if>
+    order by p.pcode desc
+  </select>
 </mapper>

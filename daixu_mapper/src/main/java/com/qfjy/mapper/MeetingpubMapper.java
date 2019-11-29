@@ -1,6 +1,7 @@
 package com.qfjy.mapper;
 
 import com.qfjy.po.Meetingpub;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -26,4 +27,6 @@ public interface MeetingpubMapper {
     //查取当前用户发出的单
     @Select("select * from meetingpub where uid=#{uid} order by pcode desc")
     List<Meetingpub> getMyMeetingpub(String uid);
+
+    List<Meetingpub> selectUsefulPub(@Param("uid")Integer uid,@Param("tname")String tname );
 }

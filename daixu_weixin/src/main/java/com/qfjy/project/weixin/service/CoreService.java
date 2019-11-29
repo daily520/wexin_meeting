@@ -7,8 +7,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.qfjy.po.User;
+import com.qfjy.po.Weiuser;
 import com.qfjy.project.weixin.api.hitokoto.HitokotoUtil;
 import com.qfjy.project.weixin.api.tuling.TulingUtil;
+import com.qfjy.service.UserService;
+import com.qfjy.service.WeiuserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +22,7 @@ import com.qfjy.project.weixin.util.MessageUtil;
 import com.qfjy.project.weixin.bean.resp.Article;
 import com.qfjy.project.weixin.bean.resp.NewsMessage;
 import com.qfjy.project.weixin.bean.resp.TextMessage;
-
+import com.qfjy.project.weixin.main.MenuManager;
 @Service
 public class CoreService {
 	private static final String MSG="请求次数超限制!";
@@ -29,6 +33,10 @@ public class CoreService {
 	private HitokotoUtil hitokotoUtil;
 	@Autowired
 	private UserInfoService userInfoService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private WeiuserService weiuserService;
 	/**
 	 * 处理微信发来的请求
 	 * 
@@ -128,10 +136,37 @@ public class CoreService {
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
 					// 事件KEY值，与创建自定义菜单时指定的KEY值对应
 					String eventKey = requestMap.get("EventKey");
-
+					//TODO
 					if (eventKey.equals("11")) {
-						respContent = "菜单项被点击！";
+						//respContent = "菜单项被点击！";
 
+						List<Article> articleList=new ArrayList<>();
+						Article article=new Article();
+						Weiuser weiuser=weiuserService.selectByOpenid(fromUserName);
+						User user=userService.getUserByWid(weiuser.getId());
+						if (user==null){
+							article.setTitle("您还未登录");
+							article.setDescription("该功能需要完成登录后才可访问,点此登录");
+							article.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575035866863&di=776e2c26f552f344067f0ec9964ae13e&imgtype=0&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2F56b3c6cec8a65133c39f07cc353ee42d37d16818.png");
+							article.setUrl(MenuManager.REAL_URL+"user/toLogin?wid="+weiuser.getId());
+						}else {
+							if (user.getRid()==1){
+								article.setTitle("您不是抢单组无法使用此功能");
+								article.setDescription("访问需要权限");
+								article.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575036370587&di=884f594af98dd26f72638033990877d6&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201804%2F05%2F20180405163029_MevJt.jpeg");
+								article.setUrl(MenuManager.REAL_URL+"user/toUnauth");
+							}else {
+								article.setTitle("欢迎您来抢单");
+								article.setDescription("抢单功能教程");
+								article.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575036541237&di=4bd84b4e182f0e96481d063600d50905&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201804%2F04%2F20180404223315_3tAGi.jpeg");
+								article.setUrl(MenuManager.REAL_URL+"meeting/grab?uid="+user.getId());
+							}
+						}
+						articleList.add(article);
+						newsMessage.setArticleCount(articleList.size());
+						newsMessage.setArticles(articleList);
+						respMessage=MessageUtil.newsMessageToXml(newsMessage);
+						return respMessage;
 					}
 					else if (eventKey.equals("70")) {
 
