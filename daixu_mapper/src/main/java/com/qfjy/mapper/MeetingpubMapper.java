@@ -29,4 +29,6 @@ public interface MeetingpubMapper {
     List<Meetingpub> getMyMeetingpub(String uid);
 
     List<Meetingpub> selectUsefulPub(@Param("uid")Integer uid,@Param("tname")String tname );
+
+    List<Meetingpub> selectMyGrab(String uid);
 }

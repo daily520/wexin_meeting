@@ -14,4 +14,5 @@ public interface MeetingpubService {
     String generateTme(String ptime);
     List<Meetingpub> getMyMeetingpub(String uid);
     List<Meetingpub> getUsefulPub(Integer uid,String tname);
+    List<Meetingpub> getMygrab(String uid);
 }

@@ -54,4 +54,9 @@ public class MeetingpubServiceImpl implements MeetingpubService {
     public List<Meetingpub> getUsefulPub(Integer uid, String tname) {
         return meetingpubMapper.selectUsefulPub(uid,tname);
     }
+
+    @Override
+    public List<Meetingpub> getMygrab(String uid) {
+        return meetingpubMapper.selectMyGrab(uid);
+    }
 }

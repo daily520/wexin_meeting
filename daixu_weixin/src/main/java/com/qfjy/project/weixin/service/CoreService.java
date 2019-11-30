@@ -156,7 +156,7 @@ public class CoreService {
 								article.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575036370587&di=884f594af98dd26f72638033990877d6&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201804%2F05%2F20180405163029_MevJt.jpeg");
 								article.setUrl(MenuManager.REAL_URL+"user/toUnauth");
 							}else {
-								article.setTitle("欢迎您来抢单");
+								article.setTitle(user.getName()+"欢迎您来抢单");
 								article.setDescription("抢单功能教程");
 								article.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575036541237&di=4bd84b4e182f0e96481d063600d50905&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201804%2F04%2F20180404223315_3tAGi.jpeg");
 								article.setUrl(MenuManager.REAL_URL+"meeting/grab?uid="+user.getId());

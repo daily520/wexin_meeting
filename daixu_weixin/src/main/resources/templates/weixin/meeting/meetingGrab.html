@@ -24,6 +24,11 @@
         function showAllGrabs(tname){
             loadGrabList(tname);//加载全部课题
         }
+        function toGrab(pid) {
+            //alert(pid);
+            $("#pid").val(pid);
+            document.formgrab.submit();
+        }
         /**
          * 可抢单列表
          * */
@@ -48,7 +53,7 @@
                             mname=msg[i].ptitle;
                             remark=msg[i].pcode;
                             dateCurr=msg[i].remark;
-
+                            var pid=msg[i].id;
                             appendHtml += "<div style='width: 100%;background-color: white;margin-top: -3px;padding:10px 10px 10px 15px;display: inline-block;'>" +
                                 "<div style='width: 70%;float: left;' onclick='showMeetingInfo(\"" + 1 + "\");'>" +
                                 "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;font-size:18px;'>" +
@@ -56,7 +61,7 @@
                                 "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;color: #777777;font-size:16px;padding-top:1px'>" +
                                 remark + " / " + dateCurr + "</div></div>" +
                                 "<div style='width: 30%;float: right;'>" +
-                                "<button class='able-btn' >可抢单</button></div></div>";
+                                "<button class='able-btn' onclick='toGrab(\""+pid+"\")'>可抢单</button></div></div>";
                         }
                     $("#grabDiv").append(appendHtml);
                 }
@@ -106,31 +111,43 @@
             var mname="学习SpringBoot";
             var remark="备注";
             var dateCurr="时间";
-            var appendHtml = "<font style='padding: 10px 10px 10px 15px;display: block;color: #777777;'>您共发布了8场会议</font>";
+            var uid=$("#uid").val();
+            $.ajax({
+                type: "post",
+                url: "[[@{/meeting/myGrab}]]",  // meetingGrab/uid
+                data: {"uid": uid},
+                success: function (msg) {
+
+                    var appendHtml = "<font style='padding: 10px 10px 10px 15px;display: block;color: #777777;'>您共发布了"+msg.length+"场会议</font>";
+
+                    for(var i=0;i<msg.length;i++){
+                        mname=msg[i].ptitle;
+                        remark=msg[i].pcode;
+                        dateCurr=msg[i].tname;
+                        var  grabStatus=msg[i].meetinggrab.grabstatus;
+                        appendHtml += "<div style='width: 100%;background-color: white;margin-top: -3px;padding:10px 10px 10px 15px;display: inline-block;'>" +
+                            "<div style='width: 70%;float: left;' onclick='showMeetingInfo(\"" + 1 + "\");'>" +
+                            "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;font-size:18px;'>" +
+                            mname + "</div>" +
+                            "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;color: #777777;font-size:16px;padding-top:1px'>" +
+                            remark + " / " + dateCurr + "</div></div>" +
+                            "<div style='width: 30%;float: right;'>" ;
+                        if(grabStatus==0){
+                            appendHtml+="未审批";
+                        }else if(grabStatus==1) {
+                            appendHtml+="<button class='able-btn' >抢单成功</button>";
+                        }else{
+                            appendHtml+="抢单失败";
+                        }
+                        appendHtml+="</div></div>";
+                    }
+
+                    $("#two").append(appendHtml);
+                }
+            })
 
 
 
-            appendHtml += "<div style='width: 100%;background-color: white;margin-top: -3px;padding:10px 10px 10px 15px;display: inline-block;'>" +
-                "<div style='width: 70%;float: left;' onclick='showMeetingInfo(\"" + 1 + "\");'>" +
-                "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;font-size:18px;'>" +
-                mname + "</div>" +
-                "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;color: #777777;font-size:16px;padding-top:1px'>" +
-                remark + " / " + dateCurr + "</div></div>" +
-                "<div style='width: 30%;float: right;'>" +
-                "<button class='able-btn' >选择讲者</button></div></div>";
-
-
-
-            appendHtml += "<div style='width: 100%;background-color: white;margin-top: -3px;padding:10px 10px 10px 15px;display: inline-block;'>" +
-                "<div style='width: 70%;float: left;' onclick='showMeetingInfo(\"" + 1 + "\");'>" +
-                "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;font-size:18px;'>" +
-                mname + "</div>" +
-                "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;color: #777777;font-size:16px;padding-top:1px'>" +
-                remark + " / " + dateCurr + "</div></div>" +
-                "<div style='width: 30%;float: right;'>" +
-                "<button class='able-btn' >选择讲者</button></div></div>";
-
-            $("#two").append(appendHtml);
 
         }
     </script>
@@ -157,7 +174,11 @@
 
             </select>
         </div>
-        <input type="hidden" th:value="${uid}" name="uid" id="uid"></input>
+        <form name="formgrab" action="" th:action="@{/meetinggrab/tograb}" method="get">
+            <input type="hidden" th:value="${uid}" name="uid" id="uid"></input>
+            <input type="hidden" name="pid" id="pid">
+        </form>
+
         <div id="grabDiv" style="width: 100%;float: left;">
 
         </div>

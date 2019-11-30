@@ -4,6 +4,7 @@ import com.qfjy.mapper.MeetingtypeMapper;
 import com.qfjy.po.Meetingpub;
 import com.qfjy.po.Meetingtype;
 import com.qfjy.service.MeetingTypeService;
+import com.qfjy.service.MeetinggrabService;
 import com.qfjy.service.MeetingpubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,8 @@ public class MeetingController {
     private MeetingTypeService meetingTypeService;
     @Autowired
     private MeetingpubService meetingpubService;
-
+    @Autowired
+    private MeetinggrabService meetinggrabService;
     @RequestMapping("typeList")
     @ResponseBody
     public List<Meetingtype> getList(){
@@ -57,5 +59,11 @@ public class MeetingController {
     @ResponseBody
     public List<Meetingpub> grabLit(@RequestParam("uid") Integer uid,@RequestParam("tname") String tname){
         return meetingpubService.getUsefulPub(uid,tname);
+    }
+
+    @RequestMapping("myGrab")
+    @ResponseBody
+    public List<Meetingpub> myGrab(@RequestParam("uid") String uid){
+        return meetingpubService.getMygrab(uid);
     }
 }
