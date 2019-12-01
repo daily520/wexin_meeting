@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qfjy.po.Weiuser;
 import com.qfjy.project.weixin.api.accesstoken.AccessTokenRedis;
+import com.qfjy.project.weixin.api.accesstoken.AccessTokenThread;
 import com.qfjy.service.WeiuserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,10 @@ public class UserInfoService {
     @Autowired
     private WeiuserService weiuserService;
     public JSONObject getUserInfo(String openid){
+        //String url=GetUserInfo_URL.replace("OPENID",openid)
+        //        .replace("ACCESS_TOKEN",accessTokenRedis.getRedisAccessToken());
         String url=GetUserInfo_URL.replace("OPENID",openid)
-                .replace("ACCESS_TOKEN",accessTokenRedis.getRedisAccessToken());
+                .replace("ACCESS_TOKEN", AccessTokenThread.access_token);
         JSONObject jsonObject=WeixinUtil.httpRequest(url,"GET",null);
         return jsonObject;
     }

@@ -18,7 +18,7 @@ public class AccessTokenThread extends Thread {
             try {
                 access_token=getAccessToken();
                 System.out.println("token:"+access_token);
-                Thread.sleep(10000);
+                Thread.sleep(6600000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

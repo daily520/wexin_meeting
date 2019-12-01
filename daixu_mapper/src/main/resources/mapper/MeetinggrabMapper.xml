@@ -125,4 +125,18 @@
       status = #{status,jdbcType=SMALLINT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectGrabList" resultMap="myMap">
+    select g.*,u.name,u.city,u.province
+    from meetinggrab g left join user u
+    on g.uid=u.id
+    where g.pid=#{pid}
+    order by g.createDate asc
+  </select>
+  <resultMap id="myMap" type="com.qfjy.po.Meetinggrab" extends="BaseResultMap">
+    <association property="user">
+      <result column="name" property="name" jdbcType="VARCHAR" />
+      <result column="province" property="province" jdbcType="VARCHAR" />
+      <result column="city" property="city" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
 </mapper>

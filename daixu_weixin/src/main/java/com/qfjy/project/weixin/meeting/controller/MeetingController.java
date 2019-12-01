@@ -1,6 +1,7 @@
 package com.qfjy.project.weixin.meeting.controller;
 
 import com.qfjy.mapper.MeetingtypeMapper;
+import com.qfjy.po.Meetinggrab;
 import com.qfjy.po.Meetingpub;
 import com.qfjy.po.Meetingtype;
 import com.qfjy.service.MeetingTypeService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author daily
@@ -65,5 +67,30 @@ public class MeetingController {
     @ResponseBody
     public List<Meetingpub> myGrab(@RequestParam("uid") String uid){
         return meetingpubService.getMygrab(uid);
+    }
+    @RequestMapping("pub")
+    public String toPub(@RequestParam("pid") String pid, @RequestParam("uid")String uid, Map<String,Object> map){
+        map.put("pid",pid);
+        map.put("uid",uid);
+        return "weixin/meeting/choose";
+    }
+    @RequestMapping("chooseList")
+    @ResponseBody
+    public List<Meetinggrab> list(@RequestParam("pid")String pid){
+        System.out.println(pid);
+        System.out.println(meetinggrabService.selectGrabListByPid(pid));
+        return meetinggrabService.selectGrabListByPid(pid);
+    }
+    @RequestMapping("choose")
+    @ResponseBody
+    public int choose(@RequestParam("pid") String pid, @RequestParam("uid")String uid){
+        int num=0;
+        try{
+            num=meetinggrabService.chooseGrab(pid,uid);
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            e.getMessage();
+        }
+        return num;
     }
 }

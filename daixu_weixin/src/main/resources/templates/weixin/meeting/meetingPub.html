@@ -32,6 +32,10 @@
 				$("#two").css("display", "none");
 				$("#one").css("display", "block");
 			}
+			function chooseGrab(pid) {
+				var uid=$("#uid").val();
+				window.location.href="/meeting/pub?uid="+uid+"&pid="+pid;
+			}
 
 			function showMyMeetings() {
 
@@ -61,7 +65,7 @@
 										"<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;color: #777777;font-size:16px;padding-top:1px'>" +
 										remark + " / " + dateCurr + "</div></div>" +
 										"<div style='width: 30%;float: right;'>" +
-										"<button class='able-btn' >选择讲者</button></div></div>";
+										"<button class='able-btn' onclick='chooseGrab(\""+list[i].id+"\")' >选择讲者</button></div></div>";
 							}
 							$("#two").append(appendHtml);
 						}

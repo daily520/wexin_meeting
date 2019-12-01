@@ -22,5 +22,6 @@ public class Meetinggrab implements Serializable {
 
     private Short status;
 
+    private User user;
 
 }

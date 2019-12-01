@@ -14,7 +14,7 @@ public class AccessTokenListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("服务启动");
-        //new AccessTokenThread().start();
+        new AccessTokenThread().start();
     }
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
